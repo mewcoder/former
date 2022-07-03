@@ -4,6 +4,9 @@
       <el-form-item label="标题">
         <el-input v-model="data.name"></el-input>
       </el-form-item>
+      <el-form-item label="数据绑定参数">
+        <el-input v-model="data.model"></el-input>
+      </el-form-item>
     </el-form>
   </div>
 </template>

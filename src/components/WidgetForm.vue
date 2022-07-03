@@ -66,6 +66,10 @@ export default {
       },
       deep: true, // 为了发现对象内部值的变化
     },
+    widgetList(val) {
+      console.log(val);
+      this.$emit("update:data", val);
+    },
   },
   methods: {
     // 选中单个元素触发的事件
@@ -81,6 +85,7 @@ export default {
           ...this.widgetList[newIndex].options,
         },
         key,
+        model: this.widgetList[newIndex].type + "_" + key, // 用于绑定表单填写数据使用
       });
     },
     onDelete(index) {

@@ -24,8 +24,11 @@
     </el-aside>
     <!-- 编辑区 -->
     <el-main class="fm-main">
+      <div style="border-bottom: 1px solid #ccc; padding: 5px">
+        <el-button size="small" @click="handlePreview">预览</el-button>
+      </div>
       <widget-form
-        :data="widgetList"
+        :data.sync="widgetList"
         :config="formConfig"
         :select.sync="widgetSelect"
       ></widget-form>
@@ -44,6 +47,20 @@
         </el-tab-pane>
       </el-tabs>
     </el-aside>
+
+    <!--弹出框-->
+    <el-dialog
+      title="表单渲染"
+      :visible.sync="dialogVisible"
+      width="1000px"
+      :before-close="
+        () => {
+          dialogVisible = false;
+        }
+      "
+    >
+      <generate-form :data="configData"></generate-form>
+    </el-dialog>
   </el-container>
 </template>
 <script>
@@ -51,12 +68,14 @@ import Draggable from "vuedraggable";
 import WidgetForm from "./WidgetForm";
 import FormConfig from "./FormConfig";
 import WidgetConfig from "./WidgetConfig";
+import GenerateForm from "./GenerateForm";
 export default {
   components: {
     Draggable,
     WidgetForm,
     FormConfig,
     WidgetConfig,
+    GenerateForm,
   },
   data() {
     return {
@@ -79,9 +98,20 @@ export default {
         size: "small",
       },
       widgetList: [],
+      dialogVisible: false, // 表单渲染数据
+      configData: {},
     };
   },
   methods: {
+    handlePreview() {
+      // 预览方法，获取表单设计器配置信息
+      const config = {
+        list: [...this.widgetList],
+        config: { ...this.formConfig },
+      };
+      this.configData = config; // 将配置信息传递到 GenerateForm 中
+      this.dialogVisible = true;
+    },
     onAdd(evt) {
       // evt： 事件对象，具体可以参考上个实验《2.4 拖拽事件》中有详细描述
       const newIndex = evt.newIndex;

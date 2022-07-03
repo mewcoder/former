@@ -6,7 +6,7 @@
         class="list-group"
         tag="ul"
         v-model="list1"
-        v-bind="dragOptions"
+        v-bind="dragOptions1"
       >
         <li class="list-group-item" v-for="element in list1" :key="element.id">
           {{ element.name }}
@@ -19,7 +19,7 @@
         class="list-group"
         tag="ul"
         v-model="list2"
-        v-bind="dragOptions"
+        v-bind="dragOptions2"
       >
         <li class="list-group-item" v-for="element in list2" :key="element.id">
           {{ element.name }}
@@ -60,7 +60,13 @@ export default {
         { name: "Thomas", id: 6 },
         { name: "John", id: 7 },
       ],
-      dragOptions: {
+      dragOptions1: {
+        animation: 200,
+        group: { name: "people", pull: "clone", put: false }, // 配置项
+        disabled: false,
+        ghostClass: "ghost",
+      },
+      dragOptions2: {
         animation: 200,
         group: "people",
         disabled: false,

@@ -5,6 +5,7 @@
     :label-position="data.config.labelPosition"
     :label-width="data.config.labelWidth + 'px'"
     :model="models"
+    :rules="rules"
   >
     <el-form-item :label="item.name" v-for="item in data.list" :key="item.key">
       <el-input
@@ -27,6 +28,7 @@ export default {
   data() {
     return {
       models: {},
+      rules: {},
     };
   },
 
@@ -47,10 +49,28 @@ export default {
       for (let i = 0; i < list.length; i++) {
         // 使用配置的默认值初始化表单 model 对象
         this.$set(this.models, list[i].model, list[i].options.defaultValue);
+
+        // 生成rules
+        this.rules[list[i].model] = list[i].rules && [
+          ...list[i].rules.map((item) => {
+            if (item.pattern) {
+              return { ...item, pattern: eval(item.pattern) };
+            } else {
+              return { ...item };
+            }
+          }),
+        ];
       }
     },
     handleSubmit() {
-      alert(JSON.stringify(this.models));
+      this.$refs.generateForm.validate((valid) => {
+        if (valid) {
+          // 验证成功
+          alert(JSON.stringify(this.models));
+        } else {
+          // 验证失败
+        }
+      });
     },
   },
 };

@@ -89,6 +89,8 @@ export default {
             width: "100%",
             defaultValue: "",
             placeholder: "",
+            required: false,
+            pattern: "",
           },
         },
       ],

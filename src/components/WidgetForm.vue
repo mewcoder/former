@@ -34,9 +34,16 @@
             v-model="element.options.defaultValue"
           ></el-input>
         </template>
-        <el-button type="text" class="delete-action" @click="onDelete(index)"
-          >删除</el-button
-        >
+        <!--加载下拉选择框组件-->
+        <template v-if="element.type == 'select'">
+          <el-select
+            :placeholder="element.options.placeholder"
+            v-model="element.options.defaultValue"
+          ></el-select>
+        </template>
+        <el-button type="text" class="delete-action" @click="onDelete(index)">
+          删除
+        </el-button>
       </el-form-item>
     </draggable>
   </el-form>

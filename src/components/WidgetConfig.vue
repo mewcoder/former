@@ -16,7 +16,9 @@
             v-model.lazy="data.options.pattern"
             placeholder="填写正则表达式"
           ></el-input>
-        </div>
+        </div> </el-form-item
+      ><el-form-item label="数据绑定方法名">
+        <el-input v-model="data.options.remoteFunc"></el-input>
       </el-form-item>
     </el-form>
   </div>
@@ -24,7 +26,8 @@
 
 <script>
 export default {
-  props: ["data"],
+  // remote 是一些方法对象，在父组件中定义，在下面被调用用来加载动态数据
+  props: ["data", "remote"],
   data() {
     return {
       validator: {
@@ -32,6 +35,29 @@ export default {
         pattern: null,
       },
     };
+  },
+  mounted() {
+    // 加载动态数据
+    if (this.data.list) {
+      for (let i = 0; i < this.data.list.length; i++) {
+        const curItem = this.data.list[i];
+
+        curItem.options.remoteOptions = [];
+        if (
+          curItem.options.remoteFunc &&
+          this.remote[curItem.options.remoteFunc]
+        ) {
+          this.remote[curItem.options.remoteFunc]((data) => {
+            curItem.options.remoteOptions = data.map((item) => {
+              return {
+                value: item.value,
+                label: item.label,
+              };
+            });
+          });
+        }
+      }
+    }
   },
   methods: {
     generateRule() {

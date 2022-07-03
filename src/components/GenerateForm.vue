@@ -15,6 +15,19 @@
         :style="{ width: item.options.width }"
         v-model="models[item.model]"
       ></el-input>
+      <!--渲染下拉选择框-->
+      <el-select
+        v-if="item.type == 'select'"
+        :placeholder="item.options.placeholder"
+        v-model="models[item.model]"
+      >
+        <el-option
+          v-for="option in item.options.remoteOptions"
+          :key="option.value"
+          :value="option.value"
+          :label="option.label"
+        ></el-option>
+      </el-select>
     </el-form-item>
     <el-form-item>
       <el-button @click="handleSubmit">提交</el-button>

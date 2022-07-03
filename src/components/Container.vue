@@ -59,7 +59,7 @@
         }
       "
     >
-      <generate-form :data="configData"></generate-form>
+      <generate-form :data="configData" :remote="remoteFuncs"></generate-form>
     </el-dialog>
   </el-container>
 </template>
@@ -93,6 +93,17 @@ export default {
             pattern: "",
           },
         },
+        {
+          type: "select",
+          name: "下拉选择框",
+          options: {
+            defaultValue: "",
+            placeholder: "",
+            required: false,
+            remoteOptions: [], // 用于绑定后端返回的数据
+            remoteFunc: "", // 设计器获取后端数据方法，下面配置时详细介绍
+          },
+        },
       ],
       formConfig: {
         labelWidth: 100,
@@ -102,6 +113,21 @@ export default {
       widgetList: [],
       dialogVisible: false, // 表单渲染数据
       configData: {},
+      remoteFuncs: {
+        func_test(resolve) {
+          // 模拟异步请求
+          setTimeout(() => {
+            const data = [
+              { value: "value1", label: "选项1" },
+              { value: "value2", label: "选项2" },
+              { value: "value3", label: "选项3" },
+            ];
+
+            // 将数据添加到回调函数中，在异步返回时进行赋值操作
+            resolve(data);
+          }, 500);
+        },
+      },
     };
   },
   methods: {

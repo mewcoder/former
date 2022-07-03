@@ -20,50 +20,27 @@
         >
           {{ element.name }}
         </li>
-      </draggable></el-aside
-    >
+      </draggable>
+    </el-aside>
     <!-- 编辑区 -->
     <el-main class="fm-main">
-      <el-form>
-        <draggable
-          class="list-group"
-          tag="ul"
-          v-model="widgetList"
-          v-bind="{
-            animation: 200,
-            group: 'people',
-            disabled: false,
-            ghostClass: 'ghost',
-          }"
-          @add="onAdd"
-        >
-          <el-form-item
-            v-for="element in widgetList"
-            :key="element.key"
-            :label="element.name"
-            class="list-form-item"
-          >
-            <template v-if="element.type == 'input'">
-              <el-input
-                :style="{ width: element.options.width }"
-                :placeholder="element.options.placeholder"
-                v-model="element.options.defaultValue"
-              ></el-input>
-            </template>
-          </el-form-item>
-        </draggable>
-      </el-form>
+      <widget-form :data="widgetList" :config="formConfig"></widget-form>
     </el-main>
     <!-- 配置区 -->
-    <el-aside width="300px" class="fm-right">配置区</el-aside>
+    <el-aside width="300px" class="fm-right">
+      <form-config :data="formConfig"> </form-config>
+    </el-aside>
   </el-container>
 </template>
 <script>
 import Draggable from "vuedraggable";
-
+import WidgetForm from "./WidgetForm";
+import FormConfig from "./FormConfig";
 export default {
   components: {
     Draggable,
+    WidgetForm,
+    FormConfig,
   },
   data() {
     return {
@@ -78,6 +55,11 @@ export default {
           },
         },
       ],
+      formConfig: {
+        labelWidth: 100,
+        labelPosition: "top",
+        size: "small",
+      },
       widgetList: [],
     };
   },

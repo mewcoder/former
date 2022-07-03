@@ -17,10 +17,15 @@
       @add="onAdd"
     >
       <el-form-item
-        v-for="element in widgetList"
+        v-for="(element, index) in widgetList"
         :key="element.key"
         :label="element.name"
         class="list-form-item"
+        @click.native.stop="handleWidgetSelect(element)"
+        :style="{
+          background:
+            selectWidget && selectWidget.key == element.key ? '#ccc' : '',
+        }"
       >
         <template v-if="element.type == 'input'">
           <el-input
@@ -47,9 +52,26 @@ export default {
   data() {
     return {
       widgetList: this.data,
+      selectWidget: this.select, // 定义当前选中的元素
     };
   },
+  watch: {
+    // 添加对 select、 slectWidget 的监听
+    select(val) {
+      this.selectWidget = val;
+    },
+    selectWidget: {
+      handler(val) {
+        this.$emit("update:select", val);
+      },
+      deep: true, // 为了发现对象内部值的变化
+    },
+  },
   methods: {
+    // 选中单个元素触发的事件
+    handleWidgetSelect(item) {
+      this.selectWidget = item;
+    },
     onAdd(evt) {
       const newIndex = evt.newIndex;
       const key = new Date().getTime();

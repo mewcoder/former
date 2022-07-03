@@ -24,11 +24,25 @@
     </el-aside>
     <!-- 编辑区 -->
     <el-main class="fm-main">
-      <widget-form :data="widgetList" :config="formConfig"></widget-form>
+      <widget-form
+        :data="widgetList"
+        :config="formConfig"
+        :select.sync="widgetSelect"
+      ></widget-form>
     </el-main>
     <!-- 配置区 -->
     <el-aside width="300px" class="fm-right">
-      <form-config :data="formConfig"> </form-config>
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="字段配置" name="widget">
+          <widget-config
+            :data="widgetSelect"
+            v-if="widgetSelect"
+          ></widget-config>
+        </el-tab-pane>
+        <el-tab-pane label="表单配置" name="form">
+          <form-config :data="formConfig"></form-config>
+        </el-tab-pane>
+      </el-tabs>
     </el-aside>
   </el-container>
 </template>
@@ -36,14 +50,18 @@
 import Draggable from "vuedraggable";
 import WidgetForm from "./WidgetForm";
 import FormConfig from "./FormConfig";
+import WidgetConfig from "./WidgetConfig";
 export default {
   components: {
     Draggable,
     WidgetForm,
     FormConfig,
+    WidgetConfig,
   },
   data() {
     return {
+      widgetSelect: null,
+      activeName: "widget",
       componentList: [
         {
           type: "input",
